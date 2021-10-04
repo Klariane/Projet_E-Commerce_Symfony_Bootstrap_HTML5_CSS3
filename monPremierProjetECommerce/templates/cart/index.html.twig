@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier - Mokolo Market{% endblock %}
+
+{% block content %}
+<h1>Mon Panier</h1>
+Retrouvez l'ensemble des produits que vous avez ajouté à votre panier.
+
+{% if cart|length > 0 %}
+
+<table class="table mt-3">
+  <thead>
+    <tr>
+    
+      <th scope="col">Produit</th>
+      <th scope="col"></th>
+      <th scope="col">Quantité</th>
+      <th scope="col">prix</th>
+      <th scope="col">Total</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+
+  {% set total = null %}
+
+{% for item in cart  %}
+    
+
+  <tbody>
+
+    <tr>
+            <th>
+            <img src="/images/{{item.product.illustration}}" alt="{{item.product.name}}" height="75px"><br/>
+            </th>
+       <td >
+       {{item.product.name}}<br/>
+       <small>{{item.product.subtitle}}</small>
+       </td>
+
+      <td>
+
+      <a href="{{path('decrease_to_cart', {'id': item.product.id})}}">
+      <img src="{{asset('assets/img_icone/minus.png')}}" height="12px" alt="diminuer la quantité de ">
+      </a>
+      x {{item.quantity}}
+
+      <a href="{{path('add_to_cart', {'id': item.product.id})}}">
+      <img src="{{asset('assets/img_icone/plus.png')}}" height="12px" alt="Ajouter un produit">
+      </a>
+
+      </td>
+
+      <td>{{ (item.product.price / 100)| number_format(2, ',', '.')}}</td>
+      <td>{{ ((item.product.price * item.quantity) / 100)| number_format(2, ',', '.')}}</td> 
+      
+      <td>
+      <a href="{{path('delete_to_cart', {'id': item.product.id})}}">
+        <img src="{{asset('assets/img_icone/delete.png')}}" height="18px" alt="Supprimer mon produit">
+      </a> 
+      </td>
+      
+
+    </tr>
+    {% set total = total + (item.product.price * item.quantity)%}
+    {% endfor %}
+  </tbody>
+  
+</table>
+
+<div class="text-right mb-5">
+<b>Nombre de produit :</b> {{ cart|length }}<br/>
+<b>Total de mon panier : </b> {{ (total / 100)| number_format(2, ',', '.')}}
+
+<a href="{{path('order')}}" class="btn btn-success btn-block mt-3">Valider mon panier</a>
+
+</div>
+{% else %}
+    <hr>
+    <div class="alert alert-primary text-center" role="alert">
+  <b>Votre panier est vide !</b>
+</div>
+
+{% endif %}
+{% endblock %}

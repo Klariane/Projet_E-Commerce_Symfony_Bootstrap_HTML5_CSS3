@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Compte - Mokolo Market{% endblock %}
+
+{% block content %}
+<h1>Mon compte</h1>
+Bienvenue {{ app.user.firstname }} dans votre espace.<br/> Vous allez pouvoir ici gérer toutes vos informations personnelles. 
+<hr>
+<a href="{{ path('account_password')}}">Modifier mon mot de passe</a> <br/>
+<a href="{{ path('account_adress')}}">Gérer mes adresses</a>
+{% endblock %}
